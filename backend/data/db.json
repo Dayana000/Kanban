@@ -1,0 +1,61 @@
+{
+  "tasks": [
+    {
+      "id": "26ccae86-d81f-46f6-8d7f-8e442c72954d",
+      "title": "Configurar tablero (ajustado)",
+      "description": "Con drag&drop",
+      "status": "Bloqueada",
+      "assigneeId": "d4ddbbce-faa7-4d34-96e6-5c79e23d71e1",
+      "createdAt": "2025-09-06T16:38:45.165Z",
+      "updatedAt": "2025-09-07T21:02:31.887Z"
+    },
+    {
+      "id": "12448677-1ced-49d6-aa3a-aca8c8b9339a",
+      "title": "Tarea_1",
+      "description": "",
+      "status": "En progreso",
+      "assigneeId": "157799a4-70d2-423c-809f-f3a83ca5e988",
+      "createdAt": "2025-09-07T20:25:33.756Z",
+      "updatedAt": "2025-09-07T21:02:29.536Z"
+    },
+    {
+      "id": "5baec275-3057-4bbc-bc18-ce1742fd7723",
+      "title": "Configurar tablero",
+      "description": "Vista Kanban inicial",
+      "status": "Creado",
+      "assigneeId": null,
+      "createdAt": "2025-09-08T06:01:49.463Z",
+      "updatedAt": "2025-09-08T06:01:49.463Z"
+    }
+  ],
+  "responsibles": [
+    {
+      "id": "658cb8b3-ec89-4c47-95f8-b17faa5b9a10",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-06T16:38:33.893Z",
+      "updatedAt": "2025-09-06T16:38:33.893Z"
+    },
+    {
+      "id": "d4ddbbce-faa7-4d34-96e6-5c79e23d71e1",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-06T16:41:50.373Z",
+      "updatedAt": "2025-09-06T16:41:50.373Z"
+    },
+    {
+      "id": "157799a4-70d2-423c-809f-f3a83ca5e988",
+      "name": "Dayana",
+      "email": "buitragodayana570@gmail.com",
+      "createdAt": "2025-09-07T20:25:00.448Z",
+      "updatedAt": "2025-09-07T20:25:00.448Z"
+    },
+    {
+      "id": "f5d8ac34-9c48-4385-8cd3-c7431f23106d",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-08T02:32:19.299Z",
+      "updatedAt": "2025-09-08T02:32:19.299Z"
+    }
+  ]
+}

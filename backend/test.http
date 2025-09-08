@@ -1,0 +1,67 @@
+@base = http://localhost:3001
+
+### 1) Ping (comprobar que el server está vivo)
+GET {{base}}/health
+
+### 2) Estados válidos (debe devolver la lista de estados)
+GET {{base}}/statuses
+
+### 3) Crear responsable (este crea uno nuevo; opcional si ya tienes uno)
+POST {{base}}/responsibles
+Content-Type: application/json
+
+{
+  "name": "Juan Pérez",
+  "email": "juan@example.com"
+}
+
+### 4) Crear tarea (este crea una nueva; opcional si ya tienes la tuya)
+POST {{base}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Configurar tablero",
+  "description": "Vista Kanban inicial"
+}
+
+### 5) Listar tareas (para ver todo lo que hay)
+GET {{base}}/tasks
+
+### 6) Cambiar estado de TU tarea (usa tu ID real)
+PATCH {{base}}/tasks/26ccae86-d81f-46f6-8d7f-8e442c72954d/status
+Content-Type: application/json
+
+{ "status": "En progreso" }
+
+### 7) Actualizar TU tarea (título/descripcion/estado)
+PUT {{base}}/tasks/26ccae86-d81f-46f6-8d7f-8e442c72954d
+Content-Type: application/json
+
+{
+  "title": "Configurar tablero (ajustado)",
+  "description": "Con drag&drop",
+  "status": "Bloqueada"
+}
+
+### 8) Asignar TU responsable a TU tarea
+PUT {{base}}/tasks/26ccae86-d81f-46f6-8d7f-8e442c72954d
+Content-Type: application/json
+
+{
+  "assigneeId": "d4ddbbce-faa7-4d34-96e6-5c79e23d71e1"
+}
+
+### 9) Volver a listar tareas (ver cambios aplicados)
+GET {{base}}/tasks
+
+### 10) Eliminar TU tarea (solo si quieres borrarla)
+DELETE {{base}}/tasks/26ccae86-d81f-46f6-8d7f-8e442c72954d
+
+### Probar Webhook directo en n8n
+POST http://localhost:5678/webhook/tekai-events
+Content-Type: application/json
+
+{
+  "mensaje": "Hola n8n",
+  "prueba": true
+}
