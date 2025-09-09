@@ -1,0 +1,125 @@
+{
+  "name": "Tekai Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tekai-events",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "53415f25-a8bd-44b9-8bad-27b9a336e052",
+      "name": "Webhook",
+      "webhookId": "07fde361-d4af-4509-aaf6-8bb3f47726ad"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "{\"ok\": true}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        496,
+        0
+      ],
+      "id": "33d78564-108a-49df-8ffa-79d6383d6166",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Eres un asistente que resume eventos de un tablero Kanban en español en una sola frase.\n\n- Si el evento es RESPONSIBLE_CREATED → \"Se creó responsable: {{$json.body.payload.name}} ({{$json.body.payload.email}})\"\n- Si el evento es TASK_CREATED → \"Nueva tarea: {{$json.body.payload.title}} – estado {{$json.body.payload.status}}\"\n- Si el evento es TASK_STATUS_CHANGED → \"Tarea {{$json.body.payload.title}} cambió a {{$json.body.payload.status}}\"\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        208,
+        0
+      ],
+      "id": "683f2f31-ffc0-46d2-af68-25b32d5f351a",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "a2iabhotw9I1Nle8",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cebe8439-bb06-4a80-ae1d-c97fbd22a626",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a2d8545a0b552615b571779bdbd53b3d5042b18d14482281f179f5d95ce14b4f"
+  },
+  "id": "taDXVkczWRxBHQqc",
+  "tags": []
+}
