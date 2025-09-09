@@ -65,3 +65,11 @@ Content-Type: application/json
   "mensaje": "Hola n8n",
   "prueba": true
 }
+
+POST http://localhost:3001/tasks
+Content-Type: application/json
+
+{
+  "title": "Prueba integración IA",
+  "description": "Ver si responde n8n"
+}
