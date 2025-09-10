@@ -84,9 +84,6 @@ npm run preview : sirve el build en local
 ### Automatizacion con n8n
 npx -y n8n start : despues de iniciar backend y fronted
 
-### Captura Tablero 
-## 📸 Capturas de pantalla
-
 ### Tablero Kanban
 ![Vista del tablero Kanban](./frontend/public/kanban.png)
 
