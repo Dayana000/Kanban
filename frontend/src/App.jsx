@@ -14,7 +14,7 @@ export default function App() {
   const [respName, setRespName] = useState("");
   const [respEmail, setRespEmail] = useState("");
 
-  // Filtros (nuevo)
+  // Filtros
   const [q, setQ] = useState("");
   const [filterResp, setFilterResp] = useState("");
 
@@ -82,28 +82,45 @@ export default function App() {
   // ------- Drag & Drop -------
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
-    if (!destination) return; // cayó fuera
+    if (!destination) return;
     const fromStatus = source.droppableId;
     const toStatus = destination.droppableId;
-    if (fromStatus === toStatus) return; // misma columna
+    if (fromStatus === toStatus) return;
 
-    // Optimista: muevo primero en UI
+    // Optimista
     setTasks(prev => prev.map(t => (t.id === draggableId ? { ...t, status: toStatus } : t)));
-    // Persisto en backend
     setStatus(draggableId, toStatus).catch(() => {
-      // Revierto si falla
       setTasks(prev => prev.map(t => (t.id === draggableId ? { ...t, status: fromStatus } : t)));
     });
   }
 
   const columnStyle = { background: "#f6f6f6", borderRadius: 8, padding: 10, minHeight: 220 };
-  const cardStyle = { background: "#fff", border: "1px solid #eee", borderRadius: 8, padding: 10, marginBottom: 8 };
+
+  // ⬇️ Tarjeta en gris claro
+  const cardStyle = {
+    background: "#f0f0f0",    // gris claro
+    color: "#213547",
+    border: "1px solid #ddd",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 8
+  };
+
+  // ⬇️ Estilo para títulos de columnas
+  const columnTitleStyle = {
+    fontWeight: 700,
+    marginBottom: 8,
+    padding: "4px 8px",
+    borderRadius: 4,
+    background: "#3b82f6",   // azul
+    color: "#fff"            // texto blanco
+  };
 
   return (
     <div style={{ fontFamily: "system-ui, Arial", padding: 16, maxWidth: 1200, margin: "0 auto" }}>
       <h1>Kanban TEKAI</h1>
 
-      {/* Barra de filtros (nuevo) */}
+      {/* Barra de filtros */}
       <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
         <input
           placeholder="Buscar por título..."
@@ -153,7 +170,8 @@ export default function App() {
                   {...provided.droppableProps}
                   style={{ ...columnStyle, outline: snapshot.isDraggingOver ? "2px dashed #999" : "none" }}
                 >
-                  <div style={{ fontWeight: 700, marginBottom: 8 }}>{st}</div>
+                  {/* 🔵 Título de columna con fondo azul */}
+                  <div style={columnTitleStyle}>{st}</div>
 
                   {(grouped[st] ?? []).length === 0 && <div style={{ fontSize: 12, opacity: 0.6 }}>(sin tareas)</div>}
 
@@ -161,6 +179,7 @@ export default function App() {
                     <Draggable draggableId={t.id} index={index} key={t.id}>
                       {(dragProvided, dragSnapshot) => (
                         <div
+                          className="card"
                           ref={dragProvided.innerRef}
                           {...dragProvided.draggableProps}
                           {...dragProvided.dragHandleProps}

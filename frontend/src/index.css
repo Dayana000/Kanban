@@ -66,3 +66,11 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.card, .task, .cuadro {
+  background-color: #f0f0f0; /* gris claro */
+  color: #213547;            /* texto oscuro para contraste */
+  border-radius: 8px;        /* opcional: esquinas redondeadas */
+  padding: 12px;             /* opcional: espacio interno */
+  margin: 8px 0;             /* opcional: separación entre tarjetas */
+}

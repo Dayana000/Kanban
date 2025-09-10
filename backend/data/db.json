@@ -1,31 +1,13 @@
 {
   "tasks": [
     {
-      "id": "26ccae86-d81f-46f6-8d7f-8e442c72954d",
-      "title": "Configurar tablero (ajustado)",
-      "description": "Con drag&drop",
-      "status": "En progreso",
-      "assigneeId": "d4ddbbce-faa7-4d34-96e6-5c79e23d71e1",
-      "createdAt": "2025-09-06T16:38:45.165Z",
-      "updatedAt": "2025-09-09T03:56:44.797Z"
-    },
-    {
-      "id": "12448677-1ced-49d6-aa3a-aca8c8b9339a",
-      "title": "Tarea_1",
-      "description": "",
-      "status": "En progreso",
-      "assigneeId": "157799a4-70d2-423c-809f-f3a83ca5e988",
-      "createdAt": "2025-09-07T20:25:33.756Z",
-      "updatedAt": "2025-09-07T21:02:29.536Z"
-    },
-    {
       "id": "5baec275-3057-4bbc-bc18-ce1742fd7723",
-      "title": "Configurar tablero",
+      "title": "Hola",
       "description": "Vista Kanban inicial",
-      "status": "Creado",
-      "assigneeId": null,
+      "status": "Cancelada",
+      "assigneeId": "157799a4-70d2-423c-809f-f3a83ca5e988",
       "createdAt": "2025-09-08T06:01:49.463Z",
-      "updatedAt": "2025-09-08T06:01:49.463Z"
+      "updatedAt": "2025-09-10T01:54:29.225Z"
     },
     {
       "id": "f1e24877-be1d-4ac1-9432-1ed6903f26fd",
@@ -40,19 +22,19 @@
       "id": "66e160b1-9393-49e5-bfbc-adff81bc7f1e",
       "title": "Configurar tablero",
       "description": "Vista Kanban inicial",
-      "status": "Creado",
+      "status": "En progreso",
       "assigneeId": null,
       "createdAt": "2025-09-08T23:11:35.934Z",
-      "updatedAt": "2025-09-08T23:11:35.934Z"
+      "updatedAt": "2025-09-10T02:42:18.516Z"
     },
     {
       "id": "80aeaadf-1170-4ad4-9e97-b50d1a0e902f",
       "title": "Configurar tablero",
       "description": "Vista Kanban inicial",
-      "status": "Creado",
+      "status": "En progreso",
       "assigneeId": null,
       "createdAt": "2025-09-09T00:13:54.579Z",
-      "updatedAt": "2025-09-09T00:13:54.579Z"
+      "updatedAt": "2025-09-10T00:43:18.272Z"
     },
     {
       "id": "d616cb2f-f422-4325-9aaf-7baa44b5491e",
@@ -82,31 +64,49 @@
       "updatedAt": "2025-09-09T03:56:32.525Z"
     },
     {
-      "id": "85a8bdf9-c3de-4857-93d9-a8eb45854e0a",
+      "id": "60b9caf2-7fc6-4da7-8c00-30bd157fc46b",
       "title": "Configurar tablero",
       "description": "Vista Kanban inicial",
       "status": "Creado",
       "assigneeId": null,
-      "createdAt": "2025-09-09T04:03:46.919Z",
-      "updatedAt": "2025-09-09T04:03:46.919Z"
+      "createdAt": "2025-09-10T01:04:17.283Z",
+      "updatedAt": "2025-09-10T01:04:17.283Z"
     },
     {
-      "id": "72c943c6-2ca7-48a5-95a6-91bb97f26f26",
+      "id": "ba9b30d6-4eea-4626-b416-d6ab8f3980c6",
       "title": "Configurar tablero",
       "description": "Vista Kanban inicial",
       "status": "Creado",
       "assigneeId": null,
-      "createdAt": "2025-09-09T04:40:18.687Z",
-      "updatedAt": "2025-09-09T04:40:18.687Z"
+      "createdAt": "2025-09-10T01:16:05.830Z",
+      "updatedAt": "2025-09-10T01:16:05.830Z"
     },
     {
-      "id": "1d08b3c6-5926-496b-aa43-32905c7410d6",
+      "id": "e7186726-5c9d-4625-beb2-8dc119868b56",
       "title": "Configurar tablero",
       "description": "Vista Kanban inicial",
       "status": "Creado",
       "assigneeId": null,
-      "createdAt": "2025-09-09T04:49:44.332Z",
-      "updatedAt": "2025-09-09T04:49:44.332Z"
+      "createdAt": "2025-09-10T01:18:06.599Z",
+      "updatedAt": "2025-09-10T01:18:06.599Z"
+    },
+    {
+      "id": "08de9b49-f811-474f-8c30-2791080c5361",
+      "title": "Configurar tablero",
+      "description": "Vista Kanban inicial",
+      "status": "Creado",
+      "assigneeId": null,
+      "createdAt": "2025-09-10T01:42:23.034Z",
+      "updatedAt": "2025-09-10T01:42:23.034Z"
+    },
+    {
+      "id": "ab84b83b-f88a-43ed-8188-b357cc0e64d0",
+      "title": "Configurar tablero",
+      "description": "Vista Kanban inicial",
+      "status": "Creado",
+      "assigneeId": null,
+      "createdAt": "2025-09-10T02:05:54.628Z",
+      "updatedAt": "2025-09-10T02:05:54.628Z"
     }
   ],
   "responsibles": [
@@ -179,6 +179,41 @@
       "email": "juan@example.com",
       "createdAt": "2025-09-09T04:40:13.159Z",
       "updatedAt": "2025-09-09T04:40:13.159Z"
+    },
+    {
+      "id": "9f1e693e-25d4-4654-a836-c3cd93156219",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-10T01:04:11.853Z",
+      "updatedAt": "2025-09-10T01:04:11.853Z"
+    },
+    {
+      "id": "792ded36-bb43-47b6-b974-15c3b5243ae9",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-10T01:04:14.949Z",
+      "updatedAt": "2025-09-10T01:04:14.949Z"
+    },
+    {
+      "id": "b01a2203-a4a9-4d14-8350-a9fc78136015",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-10T01:15:38.988Z",
+      "updatedAt": "2025-09-10T01:15:38.988Z"
+    },
+    {
+      "id": "1272074b-d8ef-4082-afda-69b54a4ec5ed",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-10T01:42:13.403Z",
+      "updatedAt": "2025-09-10T01:42:13.403Z"
+    },
+    {
+      "id": "1f53d7b1-7590-4132-ac8b-6a9945fdc55c",
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "createdAt": "2025-09-10T02:05:48.794Z",
+      "updatedAt": "2025-09-10T02:05:48.794Z"
     }
   ]
 }

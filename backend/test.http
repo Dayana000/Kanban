@@ -54,7 +54,7 @@ Content-Type: application/json
 ### 9) Volver a listar tareas (ver cambios aplicados)
 GET {{base}}/tasks
 
-### 10) Eliminar TU tarea (solo si quieres borrarla)
+### 10) Eliminar TU tarea 
 DELETE {{base}}/tasks/26ccae86-d81f-46f6-8d7f-8e442c72954d
 
 ### Probar Webhook directo en n8n
