@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import api from "./api";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
+// 🔗 Webhook de n8n (configurable por .env del frontend)
+const N8N_URL =
+  import.meta.env.VITE_N8N_WEBHOOK_URL || "http://localhost:5678/webhook/tekai-events";
+
 const STATUSES = ["Creado", "En progreso", "Bloqueada", "Finalizado", "Cancelada"];
 
 export default function App() {
@@ -23,53 +27,63 @@ export default function App() {
     setTasks(t.data);
     setResponsibles(r.data);
   }
-  useEffect(() => { loadAll(); }, []);
+  useEffect(() => {
+    loadAll();
+  }, []);
 
   // ------- Responsables -------
   async function createResponsible(e) {
     e.preventDefault();
     if (!respName.trim()) return;
-    const { data } = await api.post("/responsibles", { name: respName, email: respEmail || undefined });
-    setResponsibles(prev => [...prev, data]);
-    setRespName(""); setRespEmail("");
+    const { data } = await api.post("/responsibles", {
+      name: respName,
+      email: respEmail || undefined,
+    });
+    setResponsibles((prev) => [...prev, data]);
+    setRespName("");
+    setRespEmail("");
   }
 
   // ------- Tareas -------
   async function createTask(e) {
     e.preventDefault();
     if (!title.trim()) return;
-    const { data } = await api.post("/tasks", { title, assigneeId: assigneeId || null });
-    setTasks(prev => [...prev, data]);
-    setTitle(""); setAssigneeId("");
+    const { data } = await api.post("/tasks", {
+      title,
+      assigneeId: assigneeId || null,
+    });
+    setTasks((prev) => [...prev, data]);
+    setTitle("");
+    setAssigneeId("");
   }
 
   async function setStatus(taskId, status) {
     const { data } = await api.patch(`/tasks/${taskId}/status`, { status });
-    setTasks(prev => prev.map(t => (t.id === taskId ? data : t)));
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? data : t)));
   }
 
   async function assignResponsible(taskId, respId) {
     const { data } = await api.put(`/tasks/${taskId}`, { assigneeId: respId || null });
-    setTasks(prev => prev.map(t => (t.id === taskId ? data : t)));
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? data : t)));
   }
 
   async function editTitle(taskId, currentTitle) {
     const nuevo = prompt("Nuevo título:", currentTitle);
     if (!nuevo || !nuevo.trim()) return;
     const { data } = await api.put(`/tasks/${taskId}`, { title: nuevo.trim() });
-    setTasks(prev => prev.map(t => (t.id === taskId ? data : t)));
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? data : t)));
   }
 
   async function removeTask(taskId) {
     await api.delete(`/tasks/${taskId}`);
-    setTasks(prev => prev.filter(t => t.id !== taskId));
+    setTasks((prev) => prev.filter((t) => t.id !== taskId));
   }
 
-  const personName = (id) => responsibles.find(r => r.id === id)?.name || "—";
+  const personName = (id) => responsibles.find((r) => r.id === id)?.name || "—";
 
   // ------- Agrupado + filtros -------
   const grouped = useMemo(() => {
-    const g = Object.fromEntries(STATUSES.map(s => [s, []]));
+    const g = Object.fromEntries(STATUSES.map((s) => [s, []]));
     const term = q.trim().toLowerCase();
     for (const t of tasks) {
       if (term && !t.title.toLowerCase().includes(term)) continue;
@@ -82,28 +96,39 @@ export default function App() {
   // ------- Drag & Drop -------
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
-    if (!destination) return;
+    if (!destination) return; // cayó fuera
     const fromStatus = source.droppableId;
-    const toStatus = destination.droppableId;
-    if (fromStatus === toStatus) return;
+    const toStatus = destination.droppableId; // ✅ corregido
+    if (fromStatus === toStatus) return; // misma columna
 
-    // Optimista
-    setTasks(prev => prev.map(t => (t.id === draggableId ? { ...t, status: toStatus } : t)));
+    // Optimista: muevo primero en UI
+    setTasks((prev) =>
+      prev.map((t) => (t.id === draggableId ? { ...t, status: toStatus } : t))
+    );
+
+    // Persisto en backend y, si falla, revierto
     setStatus(draggableId, toStatus).catch(() => {
-      setTasks(prev => prev.map(t => (t.id === draggableId ? { ...t, status: fromStatus } : t)));
+      setTasks((prev) =>
+        prev.map((t) => (t.id === draggableId ? { ...t, status: fromStatus } : t))
+      );
     });
   }
 
-  const columnStyle = { background: "#f6f6f6", borderRadius: 8, padding: 10, minHeight: 220 };
+  const columnStyle = {
+    background: "#f6f6f6",
+    borderRadius: 8,
+    padding: 10,
+    minHeight: 220,
+  };
 
   // ⬇️ Tarjeta en gris claro
   const cardStyle = {
-    background: "#f0f0f0",    // gris claro
+    background: "#f0f0f0",
     color: "#213547",
     border: "1px solid #ddd",
     borderRadius: 8,
     padding: 10,
-    marginBottom: 8
+    marginBottom: 8,
   };
 
   // ⬇️ Estilo para títulos de columnas
@@ -112,8 +137,46 @@ export default function App() {
     marginBottom: 8,
     padding: "4px 8px",
     borderRadius: 4,
-    background: "#3b82f6",   // azul
-    color: "#fff"            // texto blanco
+    background: "#3b82f6",
+    color: "#fff",
+  };
+
+  // ------- Botón IA: llamar al agente (n8n) -------
+  async function callIAForTask(task) {
+    try {
+      const payload = {
+        event: "TASK_SUMMARY_REQUEST",
+        payload: {
+          id: task.id,
+          title: task.title,
+          status: task.status,
+          assigneeName: personName(task.assigneeId) || null,
+        },
+      };
+
+      const res = await fetch(N8N_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ body: payload }),
+      });
+
+      // n8n ahora responde con TEXTO (el campo `content`)
+      const aiMessage = await res.text();
+      alert("Respuesta IA: " + aiMessage);
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo contactar al agente IA.");
+    }
+  }
+
+  // Estilo mínimo para el botón IA
+  const iaBtnStyle = {
+    background: "#3b82f6",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    padding: "6px 10px",
+    cursor: "pointer",
   };
 
   return (
@@ -125,13 +188,15 @@ export default function App() {
         <input
           placeholder="Buscar por título..."
           value={q}
-          onChange={e => setQ(e.target.value)}
+          onChange={(e) => setQ(e.target.value)}
           style={{ padding: 8, minWidth: 240 }}
         />
-        <select value={filterResp} onChange={e => setFilterResp(e.target.value)} style={{ padding: 8 }}>
+        <select value={filterResp} onChange={(e) => setFilterResp(e.target.value)} style={{ padding: 8 }}>
           <option value="">(todos los responsables)</option>
-          {responsibles.map(r => (
-            <option key={r.id} value={r.id}>{r.name || r.email || r.id}</option>
+          {responsibles.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.name || r.email || r.id}
+            </option>
           ))}
         </select>
       </div>
@@ -140,8 +205,18 @@ export default function App() {
       <div style={{ padding: 12, border: "1px solid #eee", borderRadius: 8, marginBottom: 12 }}>
         <h3 style={{ marginTop: 0 }}>Crear responsable</h3>
         <form onSubmit={createResponsible} style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <input placeholder="Nombre" value={respName} onChange={(e) => setRespName(e.target.value)} style={{ padding: 8, minWidth: 200 }} />
-          <input placeholder="Email (opcional)" value={respEmail} onChange={(e) => setRespEmail(e.target.value)} style={{ padding: 8, minWidth: 240 }} />
+          <input
+            placeholder="Nombre"
+            value={respName}
+            onChange={(e) => setRespName(e.target.value)}
+            style={{ padding: 8, minWidth: 200 }}
+          />
+          <input
+            placeholder="Email (opcional)"
+            value={respEmail}
+            onChange={(e) => setRespEmail(e.target.value)}
+            style={{ padding: 8, minWidth: 240 }}
+          />
           <button type="submit">Crear responsable</button>
         </form>
       </div>
@@ -150,10 +225,19 @@ export default function App() {
       <div style={{ padding: 12, border: "1px solid #eee", borderRadius: 8, marginBottom: 16 }}>
         <h3 style={{ marginTop: 0 }}>Crear tarea</h3>
         <form onSubmit={createTask} style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <input placeholder="Título de la tarea" value={title} onChange={(e) => setTitle(e.target.value)} style={{ padding: 8, minWidth: 260 }} />
+          <input
+            placeholder="Título de la tarea"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            style={{ padding: 8, minWidth: 260 }}
+          />
           <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)} style={{ padding: 8 }}>
             <option value="">(sin responsable)</option>
-            {responsibles.map((r) => <option key={r.id} value={r.id}>{r.name || r.email || r.id}</option>)}
+            {responsibles.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name || r.email || r.id}
+              </option>
+            ))}
           </select>
           <button type="submit">Crear tarea</button>
         </form>
@@ -168,12 +252,17 @@ export default function App() {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  style={{ ...columnStyle, outline: snapshot.isDraggingOver ? "2px dashed #999" : "none" }}
+                  style={{
+                    ...columnStyle,
+                    outline: snapshot.isDraggingOver ? "2px dashed #999" : "none",
+                  }}
                 >
-                  {/* 🔵 Título de columna con fondo azul */}
+                  {/* Título de columna */}
                   <div style={columnTitleStyle}>{st}</div>
 
-                  {(grouped[st] ?? []).length === 0 && <div style={{ fontSize: 12, opacity: 0.6 }}>(sin tareas)</div>}
+                  {(grouped[st] ?? []).length === 0 && (
+                    <div style={{ fontSize: 12, opacity: 0.6 }}>(sin tareas)</div>
+                  )}
 
                   {(grouped[st] ?? []).map((t, index) => (
                     <Draggable draggableId={t.id} index={index} key={t.id}>
@@ -197,7 +286,9 @@ export default function App() {
                           {/* Acciones secundarias */}
                           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", margin: "6px 0" }}>
                             {STATUSES.filter((s) => s !== t.status).map((s) => (
-                              <button key={s} onClick={() => setStatus(t.id, s)}>{s}</button>
+                              <button key={s} onClick={() => setStatus(t.id, s)}>
+                                {s}
+                              </button>
                             ))}
                           </div>
 
@@ -208,12 +299,21 @@ export default function App() {
                             >
                               <option value="">(sin responsable)</option>
                               {responsibles.map((r) => (
-                                <option key={r.id} value={r.id}>{r.name || r.email || r.id}</option>
+                                <option key={r.id} value={r.id}>
+                                  {r.name || r.email || r.id}
+                                </option>
                               ))}
                             </select>
 
+                            {/* 🔘 Botón IA */}
+                            <button type="button" style={iaBtnStyle} onClick={() => callIAForTask(t)}>
+                              🤖 IA
+                            </button>
+
                             <button onClick={() => editTitle(t.id, t.title)}>Editar</button>
-                            <button onClick={() => removeTask(t.id)} style={{ marginLeft: "auto" }}>Eliminar</button>
+                            <button onClick={() => removeTask(t.id)} style={{ marginLeft: "auto" }}>
+                              Eliminar
+                            </button>
                           </div>
                         </div>
                       )}

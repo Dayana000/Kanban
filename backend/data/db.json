@@ -13,10 +13,10 @@
       "id": "f1e24877-be1d-4ac1-9432-1ed6903f26fd",
       "title": "Configurar tablero",
       "description": "Vista Kanban inicial",
-      "status": "Creado",
-      "assigneeId": null,
+      "status": "Finalizado",
+      "assigneeId": "56f45024-c422-4b85-8633-c85a6a5ed1ad",
       "createdAt": "2025-09-08T23:05:12.705Z",
-      "updatedAt": "2025-09-08T23:05:12.705Z"
+      "updatedAt": "2025-09-10T03:53:33.795Z"
     },
     {
       "id": "66e160b1-9393-49e5-bfbc-adff81bc7f1e",
@@ -107,6 +107,15 @@
       "assigneeId": null,
       "createdAt": "2025-09-10T02:05:54.628Z",
       "updatedAt": "2025-09-10T02:05:54.628Z"
+    },
+    {
+      "id": "72df2098-4591-49fd-964b-546a5b7b4713",
+      "title": "Tarea 5",
+      "description": "",
+      "status": "Creado",
+      "assigneeId": "56f45024-c422-4b85-8633-c85a6a5ed1ad",
+      "createdAt": "2025-09-10T03:17:27.604Z",
+      "updatedAt": "2025-09-10T03:17:27.604Z"
     }
   ],
   "responsibles": [
@@ -214,6 +223,13 @@
       "email": "juan@example.com",
       "createdAt": "2025-09-10T02:05:48.794Z",
       "updatedAt": "2025-09-10T02:05:48.794Z"
+    },
+    {
+      "id": "56f45024-c422-4b85-8633-c85a6a5ed1ad",
+      "name": "Sonia",
+      "email": "sonia878",
+      "createdAt": "2025-09-10T03:17:19.137Z",
+      "updatedAt": "2025-09-10T03:17:19.137Z"
     }
   ]
 }
